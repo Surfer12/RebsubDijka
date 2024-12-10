@@ -86,10 +86,12 @@ sequenceDiagram
     rect rgb(200, 220, 255)
         Note over PQ: Process Node 1 (dist:4)
         PQ->>D: Update neighbors
-        Note over D: Node 2: 4+9=13<br/>Node 6: 4+11=15 (no improvement)<br/>Node 7: 4+20=24
+        Note over D: Node 2: 4+9=13<br/>
+        Note over D: Node 6: 4+11=15 (no improvement)<br/>
+        Note over D: Node 7: 4+20=24
         SP->>SP: Update path options: [0,1,2], [0,1,6], [0,1,7]
         Note over D: [0:0,1:4,2:13,6:7,7:24, others ∞]
-        PQ->>PQ: (6,7), (2,13), (7,24)
+        PQ->>PQ: (6,7), (2,13), (7,24),
     end
 
     rect rgb(255, 220, 220)
@@ -164,16 +166,17 @@ Notes on “How” and “Why”:
 
 Performance & Security Considerations:
 • Performance: PriorityQueue operations are O(log V), making this approach scalable for larger graphs.
+
 • Security: Ensure no untrusted input directly modifies the graph structure. Validate all inputs if adapting for user-provided data.
+
 • Low-level: Using arrays directly could be faster but less flexible. Current approach balances readability and efficiency.
+
 • High-level: For extremely large graphs, consider more memory-efficient data structures or specialized shortest-path algorithms.
+
 • Cybersecurity: No sensitive data is stored. In a real environment, ensure secure coding practices, handle exceptions gracefully, and avoid disclosing internal system states.
 
-Integration With Conda and ML Tools:
-• After mastering Dijkstra’s, you could model user navigation paths in VR simulations as features for ML models.
-• Use conda to create a controlled environment for dependencies.
-• Python interoperability enables using results in numpy, networkx, or machine learning frameworks.
-
+• Python/Mojo interoperability enables using results in numpy, networkx, or machine learning frameworks.
+```
 import java.util.\*;
 
 class Edge {
@@ -339,3 +342,4 @@ PriorityQueue<Node> pq = new PriorityQueue<>();
     }
 
 }
+```
