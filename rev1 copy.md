@@ -140,7 +140,7 @@ sequenceDiagram
     Note over PQ: Process Node 8 (dist=11)
     PQ->>D: Extract node 8 with distance=11
     PQ->>Graph: Get neighbors of 8 => {…}
-    D->>D: Check neighbors; no shorter paths found
+    D->>D: Check neighbors no shorter paths found
 
     PQ->>PQ: Current PQ: (3,17), (5,24)
     end
@@ -209,102 +209,8 @@ Initialization:
 
 At each step, we: 1. Extract the node with the smallest distance from PQ. 2. “Relax” edges—check if the current path to each neighbor is shorter than previously recorded. 3. Update distances and PQ accordingly.
 
-```mermaid
-sequenceDiagram
-    participant PQ as "Priority Queue"
-    participant D as "Distance Array"
-    participant SP as "Shortest Path"
 
-    Note right of PQ: Initialization
-    Note right of D: Setting initial distances
-    Note right of SP: Tracking path
-    PQ->>D: distance[0] = 0, others = ∞
-    SP->>SP: Path = [0]
-    PQ->>PQ: Insert (0,0)
-
-    rect rgb(200, 255, 200)
-        Note over PQ: Process Node 0 (dist: 0)
-        PQ->>D: Update neighbors: Node 1 (0+4=4), Node 6 (0+7=7)
-        SP->>SP: Update path options: [0,1], [0,6]
-        Note over D: [0:0, 1:4, 6:7, others ∞]
-        PQ->>PQ: (1,4), (6,7)
-    end
-
-    rect rgb(200, 220, 255)
-        Note over PQ: Process Node 1 (dist:4)
-        PQ->>D: Update neighbors
-        Note over D: Node 2: 4+9=13<br/>
-        Note over D: Node 6: 4+11=15 (no improvement)<br/>
-        Note over D: Node 7: 4+20=24
-        SP->>SP: Update path options: [0,1,2], [0,1,6], [0,1,7]
-        Note over D: [0:0,1:4,2:13,6:7,7:24, others ∞]
-        PQ->>PQ: (6,7), (2,13), (7,24),
-    end
-
-    rect rgb(255, 220, 220)
-        Note over PQ: Process Node 6 (dist:7)
-        PQ->>D: Update neighbor (7: 7+1=8)
-        SP->>SP: Path = [0,6,7]
-        Note over D: [0:0,1:4,2:13,6:7,7:8, others ∞]
-        PQ->>PQ: (7,8), (2,13)
-    end
-
-    rect rgb(220, 255, 220)
-        Note over PQ: Process Node 7 (dist:8)
-        PQ->>D: Update neighbors
-        Note over D: Node 4: 8+1=9<br/>Node 8: 8+3=11
-        SP->>SP: Path = [0,6,7,4]
-        Note over D: [0:0,1:4,2:13,4:9,6:7,7:8,8:11, others ∞]
-        PQ->>PQ: (4,9), (2,13), (8,11)
-    end
-
-    rect rgb(220, 220, 255)
-        Note over PQ: Process Node 4 (dist:9)
-        PQ->>D: Update neighbors
-        Note over D: Node 2: min(13, 9+2=11) => 11<br/>Node 5: 9+15=24 (tentative)<br/>Node 8: min(11, 9+5=14) => no improvement
-        SP->>SP: Path = [0,6,7,4,2]
-        Note over D: [0:0,1:4,2:11,3:∞,4:9,5:24,6:7,7:8,8:11]
-        PQ->>PQ: (2,11), (8,11), (5,24)
-    end
-
-    rect rgb(255, 255, 220)
-        Note over PQ: Process Node 2 (dist:11)
-        PQ->>D: Update neighbors
-        Note over D: Node 3: 11+6=17<br/>Node 4: no improvement (9 is better than 11+10=21)
-        SP->>SP: Path = [0,6,7,4,2,3]
-        Note over D: [0:0,1:4,2:11,3:17,4:9,5:24,6:7,7:8,8:11]
-        PQ->>PQ: (3,17), (5,24), (8,11)
-    end
-
-    rect rgb(220, 240, 240)
-        Note over PQ: Process Node 8 (dist:11)
-        PQ->>D: Check neighbors - no improvements
-        Note over D: [0:0,1:4,2:11,3:17,4:9,5:24,6:7,7:8,8:11]
-        PQ->>PQ: (3,17), (5,24)
-    end
-
-    rect rgb(240, 240, 220)
-        Note over PQ: Process Node 3 (dist:17)
-        PQ->>D: Update neighbors
-        Note over D: Node 4: no improvement (9 is better than 17+10=27)<br/>Node 5: min(24,17+5=22) => 22
-        SP->>SP: Path = [0,6,7,4,2,3,5]
-        Note over D: [0:0,1:4,2:11,3:17,4:9,5:22,6:7,7:8,8:11]
-        PQ->>PQ: (5,22)
-    end
-
-    rect rgb(240, 200, 200)
-        Note over PQ: Process Node 5 (dist:22)
-        PQ->>D: Check neighbors (8)
-        Note over D: No improvement since 11 < 22+12=34
-        Note over PQ: Algorithm ends
-        SP->>SP: Final Path = [0,6,7,4,2,3,5]
-    end
-```
-
-Final Distances: [0:0,1:4,2:11,3:17,4:9,5:22,6:7,7:8,8:11]
-We have confirmed the shortest path to Node 5 is indeed 22.
-
-Java Code Implementation With Comments
+Java Code Implementation
 
 Notes on “How” and “Why”:
 • We use a PriorityQueue for efficient retrieval of the next closest node.
