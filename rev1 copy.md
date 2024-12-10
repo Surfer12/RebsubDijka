@@ -497,6 +497,7 @@ Step-by-Step Processing of Dijkstra’s Algorithm
 	•	After:
 	•	Distance Array: [0: **0**, 1: **4**, 2: **11**, 3: 17, 4: **9**, 5: **22**, 6: **7**, 7: **8**, 8: **11**]
 	•	Priority Queue: [] (Algorithm terminates as the Priority Queue is empty)
+```
 
 Final Distance Table:
 ```mermaid
